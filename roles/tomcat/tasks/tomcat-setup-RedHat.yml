@@ -1,0 +1,77 @@
+- name: Add EPEL repository
+  yum:
+    name: epel-release
+    state: present
+
+- name: Install basic packages
+  package:
+    name: ['vim','bash-completion','tmux','tree','htop','wget','unzip','curl','git']
+    state: present
+
+- name: Install Java 8 CentOS
+  yum:
+    name: java-1.8.0-openjdk
+    state: present
+
+- name: Add tomcat group
+  group:
+    name: tomcat
+
+- name: Add "tomcat" user
+  user:
+    name: tomcat
+    group: tomcat
+    home: /usr/share/tomcat
+    createhome: no
+    system: yes
+
+- name: Download Tomcat
+  get_url:
+    url: "{{ tomcat_archive_url }}"
+    dest: "{{ tomcat_archive_dest }}"
+
+- name: Create a tomcat directory
+  file:
+    path: /usr/share/tomcat
+    state: directory
+    owner: tomcat
+    group: tomcat
+
+- name: Extract tomcat archive
+  unarchive:
+    src: "{{ tomcat_archive_dest }}"
+    dest: /usr/share/tomcat
+    owner: tomcat
+    group: tomcat
+    remote_src: yes
+    extra_opts: "--strip-components=1"
+    creates: /usr/share/tomcat/bin
+
+- name: Copy tomcat service file
+  template:
+    src: templates/tomcat.service.j2
+    dest: /etc/systemd/system/tomcat.service
+  when: ansible_service_mgr == "systemd"
+
+- name: Start and enable tomcat
+  service:
+    daemon_reload: yes
+    name: tomcat
+    state: started
+    enabled: yes
+  when: ansible_service_mgr == "systemd"
+
+- name: Start and enable firewalld
+  service:
+    name: firewalld
+    state: started
+    enabled: yes
+  when: ansible_service_mgr == "systemd"
+
+- name: Open tomcat port on the firewall
+  firewalld:
+    port: 8080/tcp
+    permanent: true
+    state: enabled
+    immediate: yes
+  when: ansible_service_mgr == "systemd"
