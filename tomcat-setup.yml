@@ -1,5 +1,5 @@
 - name: Tomcat deployment playbook
-  hosts: app-servers
+  hosts: tomcat-nodes
   become: yes
   become_method: sudo
   remote_user: vagrant
