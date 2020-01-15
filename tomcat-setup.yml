@@ -1,0 +1,11 @@
+- name: Tomcat deployment playbook
+  hosts: app-servers
+  become: yes
+  become_method: sudo
+  remote_user: vagrant
+  vars:
+    tomcat_ver: 9.0.30
+  roles:
+    - tomcat
+
+
