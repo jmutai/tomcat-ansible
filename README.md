@@ -43,14 +43,14 @@ $ vim hosts
 ```
 $ vim tomcat-setup.yml 
 - name: Tomcat deployment playbook
-  hosts: tomcat-nodes
-  become: yes
-  become_method: sudo
-  remote_user: root
+  hosts: tomcat-nodes     # Inventory hosts group / server to act on
+  become: yes             # If to escalate privilege
+  become_method: sudo     # Set become method
+  remote_user: root       # Update username for remote server
   vars:
-    tomcat_ver: 9.0.30
+    tomcat_ver: 9.0.30    # Tomcat version to install
   roles:
-    - tomcat 
+    - tomcat
 ```
 
 If you are using non root remote user, then set username and enable sudo:
