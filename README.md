@@ -27,6 +27,7 @@ This role contains tasks to:
 
 ```
 $ git clone https://github.com/jmutai/tomcat-ansible.git
+$ cd tomcat-ansible
 ```
 
 - Update your inventory, e.g:
