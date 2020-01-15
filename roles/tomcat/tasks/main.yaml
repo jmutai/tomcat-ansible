@@ -5,4 +5,4 @@
     - "{{ ansible_distribution }}{{ ansible_distribution_major_version }}.yml"
     - "{{ ansible_os_family }}.yml"
 
-- include_tasks: "tomcat-{{ ansible_os_family }}.yml"
+- include_tasks: "tomcat-setup-{{ ansible_os_family }}.yml"
