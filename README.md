@@ -7,9 +7,9 @@
 
 - CentOS 8
 - CentOS 7
-- Fedora 35
-- Ubuntu 18.04
-- Debian 10
+- Fedora 36
+- Ubuntu 20.04 / Ubuntu 18.04
+- Debian 11 / Debian 10
 
 ## Tasks in the role
 
