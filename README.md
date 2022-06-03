@@ -7,7 +7,7 @@
 
 - CentOS 8
 - CentOS 7
-- Fedora 31
+- Fedora 35
 - Ubuntu 18.04
 - Debian 10
 
