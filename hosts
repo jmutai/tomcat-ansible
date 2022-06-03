@@ -1,2 +1,2 @@
-[tomcat-nodes]
+[tomcat_nodes]
 192.168.10.10 # Add Server IP address, one line per server
