@@ -5,7 +5,7 @@
 
 - name: Install basic packages
   package:
-    name: ['vim','bash-completion','tmux','tree','htop','wget','unzip','curl','git']
+    name: ['firewalld','vim','bash-completion','tmux','tree','htop','wget','unzip','curl','git']
     state: present
 
 - name: Install Java 8 CentOS
