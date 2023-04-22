@@ -39,6 +39,7 @@ $ vim hosts
 ```
 
 - Update variables in playbook file - Set Tomcat version, remote user and Tomcat UI access credentials
+- Update ansible.cfg file if necessary
 
 ```
 $ vim tomcat-setup.yml
@@ -49,6 +50,7 @@ $ vim tomcat-setup.yml
   remote_user: root         # Update username for remote server
   vars:
     tomcat_ver: 9.0.64                          # Tomcat version to install
+    tomcat_v_num: 9                             # Tomcat version number
     ui_manager_user: manager                    # User who can access the UI manager section only
     ui_manager_pass: Str0ngManagerP@ssw3rd      # UI manager user password
     ui_admin_username: admin                    # User who can access bpth manager and admin UI sections
