@@ -8,8 +8,8 @@
 - CentOS 8
 - CentOS 7
 - Fedora 36
-- Ubuntu 20.04 / Ubuntu 18.04
-- Debian 11 / Debian 10
+- Ubuntu 22.04/20.04/18.04
+- Debian 12/11/10
 
 ## Tasks in the role
 
@@ -49,7 +49,7 @@ $ vim tomcat-setup.yml
   become_method: sudo       # Set become method
   remote_user: root         # Update username for remote server
   vars:
-    tomcat_ver: 9.0.64                          # Tomcat version to install
+    tomcat_ver: 9.0.86                          # Tomcat version to install
     tomcat_v_num: 9                             # Tomcat version number
     ui_manager_user: manager                    # User who can access the UI manager section only
     ui_manager_pass: Str0ngManagerP@ssw3rd      # UI manager user password
