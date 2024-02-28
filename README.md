@@ -35,7 +35,7 @@ $ cd tomcat-ansible
 ```
 $ vim hosts
 [tomcat_nodes]
-192.168.10.10       # Remote user to act on
+192.168.10.20       # Remote user to act on
 ```
 
 - Update variables in playbook file - Set Tomcat version, remote user and Tomcat UI access credentials
@@ -43,14 +43,15 @@ $ vim hosts
 
 ```
 $ vim tomcat-setup.yml
+---
 - name: Tomcat deployment playbook
   hosts: tomcat_nodes       # Inventory hosts group / server to act on
   become: yes               # If to escalate privilege
   become_method: sudo       # Set become method
   remote_user: root         # Update username for remote server
   vars:
-    tomcat_ver: 9.0.86                          # Tomcat version to install
-    tomcat_v_num: 9                             # Tomcat version number
+    tomcat_ver: 10.1.19                         # 9.0.64 - Tomcat full version number to install, see https://archive.apache.org/dist/tomcat/
+    tomcat_v_num: 10                            # Tomcat major release number, e.g 10 or 9
     ui_manager_user: manager                    # User who can access the UI manager section only
     ui_manager_pass: Str0ngManagerP@ssw3rd      # UI manager user password
     ui_admin_username: admin                    # User who can access bpth manager and admin UI sections
