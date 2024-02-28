@@ -1,6 +1,6 @@
 ## Role info
 
-> Ansible Role to Install Tomcat 9 on CentOS, Fedora, Debian and Ubuntu Linux.
+> Ansible Role to Install Tomcat on CentOS, Fedora, Debian and Ubuntu Linux. This works for any version of Tomcat.
 
 
 ## Tested on the following operating systems
