@@ -7,7 +7,7 @@
 
 - CentOS 8
 - CentOS 7
-- Fedora 36
+- Fedora 39
 - Ubuntu 22.04/20.04/18.04
 - Debian 12/11/10
 
