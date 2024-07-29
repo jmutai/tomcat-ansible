@@ -5,10 +5,9 @@
 
 ## Tested on the following operating systems
 
-- CentOS 8
-- CentOS 7
-- Fedora 39
-- Ubuntu 22.04/20.04/18.04
+- CentOS / Rocky / AlmaLinux 9|8
+- Fedora 40
+- Ubuntu 24.04/22.04/20.04/18.04
 - Debian 12/11/10
 
 ## Tasks in the role
