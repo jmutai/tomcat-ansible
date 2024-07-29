@@ -18,7 +18,7 @@
 
 - name: Install Default Java (Debian/Ubuntu)
   apt:
-    name: default-jdk
+    name: openjdk-17-jdk
     state: present
 
 - name: Add tomcat group
