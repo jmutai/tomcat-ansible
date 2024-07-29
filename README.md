@@ -49,7 +49,7 @@ $ vim tomcat-setup.yml
   become_method: sudo       # Set become method
   remote_user: root         # Update username for remote server
   vars:
-    tomcat_ver: 10.1.19                         # 9.0.64 - Tomcat full version number to install, see https://archive.apache.org/dist/tomcat/
+    tomcat_ver: 10.1.26                         # 9.0.91 - Tomcat full version number to install, see https://archive.apache.org/dist/tomcat/
     tomcat_v_num: 10                            # Tomcat major release number, e.g 10 or 9
     ui_manager_user: manager                    # User who can access the UI manager section only
     ui_manager_pass: Str0ngManagerP@ssw3rd      # UI manager user password
