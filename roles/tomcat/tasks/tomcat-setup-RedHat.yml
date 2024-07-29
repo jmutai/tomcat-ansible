@@ -8,9 +8,9 @@
     name: ['firewalld','vim','bash-completion','tmux','tree','htop','wget','unzip','curl','git']
     state: present
 
-- name: Install Java 8 CentOS
+- name: Install Java OpenJDK
   yum:
-    name: java-1.8.0-openjdk
+    name: java-17-openjdk
     state: present
 
 - name: Add tomcat group
