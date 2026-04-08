@@ -1,1 +1,13 @@
-JAVA_HOME: /usr/lib/jvm/jre
+---
+tomcat_java_home: "/usr/lib/jvm/jre-{{ tomcat_java_version }}-openjdk"
+tomcat_java_package: "java-{{ tomcat_java_version }}-openjdk"
+tomcat_utility_packages:
+  - vim
+  - bash-completion
+  - tmux
+  - tree
+  - htop
+  - wget
+  - unzip
+  - curl
+  - git

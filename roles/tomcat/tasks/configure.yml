@@ -1,0 +1,46 @@
+---
+- name: Deploy setenv.sh for JVM tuning
+  ansible.builtin.template:
+    src: setenv.sh.j2
+    dest: "{{ tomcat_install_dir }}/bin/setenv.sh"
+    owner: "{{ tomcat_user }}"
+    group: "{{ tomcat_group }}"
+    mode: "0750"
+  notify: restart tomcat
+
+- name: Deploy systemd service file
+  ansible.builtin.template:
+    src: tomcat.service.j2
+    dest: "/etc/systemd/system/{{ tomcat_service_name }}.service"
+    owner: root
+    group: root
+    mode: "0644"
+  notify: restart tomcat
+
+- name: Start and enable Tomcat service
+  ansible.builtin.systemd_service:
+    name: "{{ tomcat_service_name }}"
+    state: started
+    enabled: true
+    daemon_reload: true
+
+- name: Deploy tomcat-users.xml
+  ansible.builtin.template:
+    src: tomcat-users.xml.j2
+    dest: "{{ tomcat_install_dir }}/conf/tomcat-users.xml"
+    owner: "{{ tomcat_user }}"
+    group: "{{ tomcat_group }}"
+    mode: "0600"
+  notify: restart tomcat
+
+- name: Configure Manager and Host Manager access
+  ansible.builtin.template:
+    src: context.xml.j2
+    dest: "{{ item }}"
+    owner: "{{ tomcat_user }}"
+    group: "{{ tomcat_group }}"
+    mode: "0644"
+  loop:
+    - "{{ tomcat_install_dir }}/webapps/host-manager/META-INF/context.xml"
+    - "{{ tomcat_install_dir }}/webapps/manager/META-INF/context.xml"
+  notify: restart tomcat

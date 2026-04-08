@@ -1,0 +1,28 @@
+---
+- name: Validate tomcat_major_version
+  ansible.builtin.assert:
+    that:
+      - tomcat_major_version | string in ["9", "10", "11"]
+    fail_msg: "tomcat_major_version must be 9, 10, or 11. Got: {{ tomcat_major_version }}"
+    quiet: true
+
+- name: Validate tomcat_java_version
+  ansible.builtin.assert:
+    that:
+      - tomcat_java_version | string in ["11", "17", "21"]
+    fail_msg: "tomcat_java_version must be 11, 17, or 21. Got: {{ tomcat_java_version }}"
+    quiet: true
+
+- name: Validate OS family
+  ansible.builtin.assert:
+    that:
+      - ansible_os_family in ["Debian", "RedHat"]
+    fail_msg: "Unsupported OS family: {{ ansible_os_family }}. Only Debian and RedHat are supported."
+    quiet: true
+
+- name: Warn if default passwords are unchanged
+  ansible.builtin.debug:
+    msg: >-
+      WARNING: Default passwords detected. Use ansible-vault or --extra-vars
+      to set tomcat_manager_password and tomcat_admin_password for production use.
+  when: tomcat_manager_password == "changeme" or tomcat_admin_password == "changeme"

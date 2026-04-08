@@ -1,0 +1,96 @@
+---
+- name: Load OS-specific variables
+  ansible.builtin.include_vars: "{{ lookup('ansible.builtin.first_found', params) }}"
+  vars:
+    params:
+      files:
+        - "{{ ansible_distribution }}{{ ansible_distribution_major_version }}.yml"
+        - "{{ ansible_os_family }}.yml"
+      paths:
+        - vars
+
+- name: Install EPEL repository (RedHat family)
+  ansible.builtin.dnf:
+    name: epel-release
+    state: present
+  when: ansible_os_family == "RedHat"
+
+- name: Update APT cache (Debian family)
+  ansible.builtin.apt:
+    update_cache: true
+    cache_valid_time: 3600
+  when: ansible_os_family == "Debian"
+
+- name: Install Java (Debian family)
+  ansible.builtin.apt:
+    name: "{{ tomcat_java_package }}"
+    state: present
+  when: ansible_os_family == "Debian"
+
+- name: Install Java (RedHat family)
+  ansible.builtin.dnf:
+    name: "{{ tomcat_java_package }}"
+    state: present
+  when: ansible_os_family == "RedHat"
+
+- name: Install utility packages (Debian family)
+  ansible.builtin.apt:
+    name: "{{ tomcat_utility_packages + tomcat_extra_packages }}"
+    state: present
+  when:
+    - tomcat_install_utilities | bool
+    - ansible_os_family == "Debian"
+
+- name: Install utility packages (RedHat family)
+  ansible.builtin.dnf:
+    name: "{{ tomcat_utility_packages + tomcat_extra_packages }}"
+    state: present
+  when:
+    - tomcat_install_utilities | bool
+    - ansible_os_family == "RedHat"
+
+- name: Create tomcat group
+  ansible.builtin.group:
+    name: "{{ tomcat_group }}"
+    state: present
+
+- name: Create tomcat user
+  ansible.builtin.user:
+    name: "{{ tomcat_user }}"
+    group: "{{ tomcat_group }}"
+    home: "{{ tomcat_install_dir }}"
+    createhome: false
+    system: true
+    shell: /bin/false
+
+- name: Create tomcat installation directory
+  ansible.builtin.file:
+    path: "{{ tomcat_install_dir }}"
+    state: directory
+    owner: "{{ tomcat_user }}"
+    group: "{{ tomcat_group }}"
+    mode: "0755"
+
+- name: Download Tomcat archive
+  ansible.builtin.get_url:
+    url: "{{ tomcat_archive_url }}"
+    dest: "{{ tomcat_archive_dest }}"
+    mode: "0644"
+
+- name: Extract Tomcat archive
+  ansible.builtin.unarchive:
+    src: "{{ tomcat_archive_dest }}"
+    dest: "{{ tomcat_install_dir }}"
+    owner: "{{ tomcat_user }}"
+    group: "{{ tomcat_group }}"
+    remote_src: true
+    extra_opts: "--strip-components=1"
+    creates: "{{ tomcat_install_dir }}/bin"
+
+- name: Set ownership on Tomcat directory
+  ansible.builtin.file:
+    path: "{{ tomcat_install_dir }}"
+    state: directory
+    owner: "{{ tomcat_user }}"
+    group: "{{ tomcat_group }}"
+    recurse: true

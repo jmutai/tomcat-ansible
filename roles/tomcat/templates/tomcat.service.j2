@@ -1,22 +1,24 @@
 [Unit]
-Description=Tomcat
+Description=Apache Tomcat {{ tomcat_version }}
 After=syslog.target network.target
 
 [Service]
 Type=forking
 
-User=tomcat
-Group=tomcat
+User={{ tomcat_user }}
+Group={{ tomcat_group }}
 
-Environment=JAVA_HOME={{ JAVA_HOME }}
-Environment='JAVA_OPTS=-Djava.awt.headless=true'
+Environment=JAVA_HOME={{ tomcat_java_home }}
 
-Environment=CATALINA_HOME=/usr/share/tomcat
-Environment=CATALINA_BASE=/usr/share/tomcat
-Environment=CATALINA_PID=/usr/share/tomcat/temp/tomcat.pid
+Environment=CATALINA_HOME={{ tomcat_install_dir }}
+Environment=CATALINA_BASE={{ tomcat_install_dir }}
+Environment=CATALINA_PID={{ tomcat_install_dir }}/temp/tomcat.pid
 
-ExecStart=/usr/share/tomcat/bin/catalina.sh start
-ExecStop=/usr/share/tomcat/bin/catalina.sh stop
+ExecStart={{ tomcat_install_dir }}/bin/catalina.sh start
+ExecStop={{ tomcat_install_dir }}/bin/catalina.sh stop
+
+Restart=on-failure
+RestartSec=10
 
 [Install]
 WantedBy=multi-user.target

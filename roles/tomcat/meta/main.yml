@@ -1,0 +1,36 @@
+---
+galaxy_info:
+  role_name: tomcat
+  author: jmutai
+  description: Install and configure Apache Tomcat (9, 10, 11) on RHEL, Rocky Linux, AlmaLinux, Fedora, Ubuntu, and Debian
+  company: computingforgeeks.com
+  license: GPL-3.0-only
+  min_ansible_version: "2.15"
+
+  platforms:
+    - name: Ubuntu
+      versions:
+        - noble    # 24.04
+        - jammy    # 22.04
+    - name: Debian
+      versions:
+        - bookworm # 12
+    - name: EL
+      versions:
+        - "9"
+    - name: Fedora
+      versions:
+        - "40"
+        - "41"
+
+  galaxy_tags:
+    - tomcat
+    - java
+    - webapp
+    - deployment
+    - apache
+    - servlet
+    - jvm
+    - web
+
+dependencies: []

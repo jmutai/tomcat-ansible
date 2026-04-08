@@ -1,2 +1,13 @@
 ---
-JAVA_HOME: /usr/lib/jvm/default-java
+tomcat_java_home: "/usr/lib/jvm/java-{{ tomcat_java_version }}-openjdk-{{ ansible_architecture | regex_replace('x86_64', 'amd64') | regex_replace('aarch64', 'arm64') }}"
+tomcat_java_package: "openjdk-{{ tomcat_java_version }}-jdk"
+tomcat_utility_packages:
+  - vim
+  - bash-completion
+  - tmux
+  - tree
+  - htop
+  - wget
+  - unzip
+  - curl
+  - git

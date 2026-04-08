@@ -1,0 +1,19 @@
+---
+- name: Preflight checks
+  ansible.builtin.include_tasks: preflight.yml
+
+- name: Install Tomcat
+  ansible.builtin.include_tasks: install.yml
+
+- name: Configure Tomcat
+  ansible.builtin.include_tasks: configure.yml
+
+- name: Configure firewall
+  ansible.builtin.include_tasks: firewall.yml
+  when:
+    - ansible_os_family == "RedHat"
+    - tomcat_configure_firewall | bool
+
+- name: Verify Tomcat installation
+  ansible.builtin.include_tasks: verify.yml
+  when: tomcat_health_check_enabled | bool

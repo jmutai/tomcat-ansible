@@ -1,0 +1,103 @@
+---
+- name: Verify
+  hosts: all
+  become: true
+  tasks:
+    - name: Check tomcat user exists
+      ansible.builtin.getent:
+        database: passwd
+        key: tomcat
+      register: tomcat_user_check
+
+    - name: Assert tomcat user exists
+      ansible.builtin.assert:
+        that:
+          - tomcat_user_check is not failed
+
+    - name: Check installation directory
+      ansible.builtin.stat:
+        path: /opt/tomcat/bin/catalina.sh
+      register: catalina_check
+
+    - name: Assert Tomcat is installed
+      ansible.builtin.assert:
+        that:
+          - catalina_check.stat.exists
+
+    - name: Check directory ownership
+      ansible.builtin.stat:
+        path: /opt/tomcat
+      register: tomcat_dir
+
+    - name: Assert correct ownership
+      ansible.builtin.assert:
+        that:
+          - tomcat_dir.stat.pw_name == "tomcat"
+          - tomcat_dir.stat.gr_name == "tomcat"
+
+    - name: Check setenv.sh exists and is executable
+      ansible.builtin.stat:
+        path: /opt/tomcat/bin/setenv.sh
+      register: setenv_check
+
+    - name: Assert setenv.sh is present and executable
+      ansible.builtin.assert:
+        that:
+          - setenv_check.stat.exists
+          - setenv_check.stat.executable
+
+    - name: Check systemd service file
+      ansible.builtin.stat:
+        path: /etc/systemd/system/tomcat.service
+      register: service_file
+
+    - name: Assert service file exists
+      ansible.builtin.assert:
+        that:
+          - service_file.stat.exists
+
+    - name: Check Tomcat service is running
+      ansible.builtin.systemd_service:
+        name: tomcat
+      register: tomcat_service
+
+    - name: Assert service is running and enabled
+      ansible.builtin.assert:
+        that:
+          - tomcat_service.status.ActiveState == "active"
+
+    - name: Check Tomcat is listening on port 8080
+      ansible.builtin.wait_for:
+        port: 8080
+        host: 127.0.0.1
+        timeout: 30
+
+    - name: Verify HTTP response
+      ansible.builtin.uri:
+        url: http://127.0.0.1:8080
+        status_code: 200
+      register: http_check
+      retries: 5
+      delay: 3
+      until: http_check.status == 200
+
+    - name: Check tomcat-users.xml has correct permissions
+      ansible.builtin.stat:
+        path: /opt/tomcat/conf/tomcat-users.xml
+      register: users_xml
+
+    - name: Assert tomcat-users.xml permissions
+      ansible.builtin.assert:
+        that:
+          - users_xml.stat.mode == "0600"
+          - users_xml.stat.pw_name == "tomcat"
+
+    - name: Verify Java is installed
+      ansible.builtin.command: java -version
+      register: java_check
+      changed_when: false
+
+    - name: Assert Java is available
+      ansible.builtin.assert:
+        that:
+          - java_check.rc == 0

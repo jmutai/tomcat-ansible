@@ -1,0 +1,21 @@
+---
+- name: Wait for Tomcat port to be available
+  ansible.builtin.wait_for:
+    port: "{{ tomcat_port }}"
+    host: "127.0.0.1"
+    delay: 5
+    timeout: 60
+
+- name: Verify Tomcat is responding
+  ansible.builtin.uri:
+    url: "http://127.0.0.1:{{ tomcat_port }}"
+    status_code: 200
+    return_content: false
+  register: tomcat_health
+  retries: "{{ tomcat_health_check_retries }}"
+  delay: "{{ tomcat_health_check_delay }}"
+  until: tomcat_health.status == 200
+
+- name: Display Tomcat status
+  ansible.builtin.debug:
+    msg: "Tomcat {{ tomcat_version }} is running on port {{ tomcat_port }}"

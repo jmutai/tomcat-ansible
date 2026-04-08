@@ -1,0 +1,13 @@
+---
+- name: Converge
+  hosts: all
+  become: true
+  vars:
+    tomcat_version: "10.1.34"
+    tomcat_major_version: "10"
+    tomcat_manager_password: "TestPass123!"
+    tomcat_admin_password: "TestPass123!"
+    tomcat_configure_firewall: false
+    tomcat_health_check_enabled: true
+  roles:
+    - role: tomcat
